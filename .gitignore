@@ -1,0 +1,12 @@
+*.exe
+*.o
+*.bin
+*.zip
+*.txt
+*.in
+*.out
+*.ko
+Module.symvers
+modules.order
+driver.mod
+.vscode
