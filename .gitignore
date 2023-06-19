@@ -9,5 +9,4 @@
 Module.symvers
 modules.order
 driver.mod
-./.driver.o.d
 .vscode
