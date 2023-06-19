@@ -2,10 +2,10 @@
 *.o
 *.bin
 *.zip
-*.txt
 *.in
 *.out
 *.ko
+*.cmd
 Module.symvers
 modules.order
 driver.mod
