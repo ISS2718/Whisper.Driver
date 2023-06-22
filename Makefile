@@ -10,7 +10,7 @@ insert:
 	sudo insmod driver.ko
 
 remove:
-	sudo rmmod driver
+	sudo rmmod -r driver
 
 vlog:
 	sudo dmesg -w
