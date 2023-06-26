@@ -3,7 +3,7 @@ BUILD := ./build
 DIST := ./dist
 CLASSES := $(BUILD)/classes
 
-all: sstart
+all: start
 
 compile: $(SRC)/Servidor.java $(SRC)/ServidorInterface.java $(SRC)/ServidorInterfaceDocumentController.java $(SRC)/ServidorInterfaceDocument.fxml $(SRC)/styles.css
 	ant compile
@@ -11,8 +11,8 @@ compile: $(SRC)/Servidor.java $(SRC)/ServidorInterface.java $(SRC)/ServidorInter
 jar: compile
 	ant jar
 
-sstart: jar
-	mkdir ../Servidor && cp $(DIST)/* ../Servidor
+start: 
+	ant jfxsa-run
 
-clean: $(CLASSES)/servidorinterface $(DIST)/* ../Servidor
-	rm -r $(CLASSES)/servidorinterface && rm -I $(DIST)/* && rm -r ../Servidor
+clean: $(CLASSES)/servidorinterface $(DIST)/*
+	rm -r $(CLASSES)/servidorinterface && rm -I $(DIST)/*

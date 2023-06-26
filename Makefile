@@ -4,13 +4,21 @@ SCR_SEVER := ./ServidorInterface
 all: compile
 
 compile: $(SCR_MODULE)/Makefile $(SCR_SEVER)/Makefile
-	$(SCR_MODULE)/Makefile all && $(SCR_SEVER)/Makefile all
+	cd $(SCR_SEVER) && make jar
+	cd $(SCR_MODULE) && make all
 	
 insert: $(SCR_MODULE)/Makefile
-	 $(SCR_MODULE)/Makefile insert
+	 cd $(SCR_MODULE) && make insert
 
 remove: $(SCR_MODULE)/Makefile
-	 $(SCR_MODULE)/Makefile remove
+	 cd $(SCR_MODULE) && make remove
+
+vlog: $(SCR_MODULE)/Makefile
+	cd $(SCR_MODULE) && make vlog
+
+start: $(SCR_SEVER)/Makefile
+	cd $(SCR_SEVER) && make start
 
 clean: $(SCR_MODULE)/Makefile $(SCR_SEVER)/Makefile
-	$(SCR_MODULE)/Makefile clean && $(SCR_SEVER)/Makefile clean
+	cd $(SCR_SEVER) && make clean
+	cd $(SCR_MODULE) && make clean 
