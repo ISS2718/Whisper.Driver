@@ -8,11 +8,13 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ServidorInterfaceDocumentController implements Initializable {
     
@@ -89,6 +91,12 @@ public class ServidorInterfaceDocumentController implements Initializable {
     
     public void adicionarItem(ListView list, String mensagem){
         list.getItems().add(0, mensagem);
+    }
+    
+    public void fecharServidor(Stage stage) {
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            System.exit(0);
+            });
     }
     
     Thread recebeMensagens =  new Thread(()->{

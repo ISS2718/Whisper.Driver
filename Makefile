@@ -1,16 +1,16 @@
-obj-m := backdoorDriver.o
+SCR_MODULE := ./Kernel_Module
+SCR_SEVER := ./ServidorInterface
 
-all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+all: compile
 
-clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+compile: $(SCR_MODULE)/Makefile $(SCR_SEVER)/Makefile
+	$(SCR_MODULE)/Makefile all && $(SCR_SEVER)/Makefile all
+	
+insert: $(SCR_MODULE)/Makefile
+	 $(SCR_MODULE)/Makefile insert
 
-insert:
-	sudo insmod backdoorDriver.ko
+remove: $(SCR_MODULE)/Makefile
+	 $(SCR_MODULE)/Makefile remove
 
-remove:
-	sudo rmmod backdoorDriver.ko
-
-vlog:
-	sudo dmesg --follow
+clean: $(SCR_MODULE)/Makefile $(SCR_SEVER)/Makefile
+	$(SCR_MODULE)/Makefile clean && $(SCR_SEVER)/Makefile clean
