@@ -31,7 +31,6 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
    * [**3. Instalação dos Pré-requisitos (Ubuntu).**](#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos-ubuntu)
       * [**3.1. Java 8 JDK.**](#31-java-8-jdk)
       * [**3.2. Apache ant.**](#32-apache-ant)
-      * [**3.3. Arquivos headers de kernel.**](#33-arquivos-headers-de-kernel)
    * [**4. Guia de execução.**](#33-arquivos-headers-de-kernel)
    * [**5. Resumo do driver.**](#5-resumo-do-driver)
        * [**5.1. Conexão do cliente com o servidor.**](#51-conex%C3%A3o-do-cliente-com-o-servidor)
@@ -46,8 +45,6 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
 
 ---
 
-**Esse código foi realizado e executado na distribuição de Linux Ubuntu 23.04. Em outros sistemas derivados, algumas execuções podem não funcionar!**
-
 ## **1. Composição do projeto.**
 
 O projeto foi desenvolvido com o propósito de ser um driver de kernel capaz de escanear as teclas do teclado e enviar a um usuário externo conectado, funcionando por trás do uso principal do sistema.
@@ -56,13 +53,14 @@ Dessa forma, o usuário externo é um servidor, implementado em **user space** n
 
 ## **2. Pré-Requisitos.**
 
-* JDK Java 8 com javaFX;
-* Apache ant;
+* JDK Java (qualquer versão o 8 ou superior);
 * Arquivos headers de kernel;
 
-## **3. Instalação dos Pré-requisitos (Ubuntu).**
+## **3. Instalação dos Pré-requisitos.**
 
-### **3.1. Java 8 JDK.**
+### **3.1. Ubuntu.**
+
+#### **3.1.2. Java JDK.**
 
 Para instalação do JDK8 é preciso ter o pacote de desenvolvedor Java 8. 
 
@@ -71,15 +69,8 @@ No site oficial da [Oracle](https://www.oracle.com/br/java/technologies/javase/j
 ```
 $ sudo tar -C /usr/java -zxf <nome do arquivo binário>.tar.gz
 ```
-### **3.2. Apache ant.**
 
-A execução do servidor depende do compilador Apache Ant. Caso você não possua instalado, basta copiar o código abaixo no terminal e executar.
-
-```
-$ sudo apt install ant
-```
-
-### **3.3. Arquivos headers de kernel.**
+#### **3.2. Arquivos headers de kernel.**
 
 Para saber se essas bibliotecas estão instaladas no seu sistema, execute
 
@@ -141,7 +132,6 @@ endereco.sin_addr.s_addr = htonl(criaEndereco(ip));
 socket->ops->connect(socket, (struct sockaddr*)&endereco, sizeof(endereco), O_RDWR);
 
 ```
-
 
 ### **5.2. Rotinas de envio de mensagem.**
 
