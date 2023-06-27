@@ -30,13 +30,13 @@ O projeto foi desenvolvido com o propósito de ser um driver de kernel capaz de 
 
 Dessa forma, o usuário externo é um servidor, implementado em **user space** na linguagem Java, com interface JavaFX. O driver é um módulo kernel, com um listener de teclas e um socket de cliente, implementado em C no **kernel space**.
 
-## **2. Requisitos**
+## **2. Pré-Requisitos**
 
 * JDK Java 8 com javaFX;
 * Apache ant;
 * Arquivos headers de kernel;
 
-## **3. Instalação dos requisitos.**
+## **3. Instalação dos Pré-requisitos (Ubuntu).**
 
 ### **3.1. Java 8 JDK.**
 
@@ -163,3 +163,16 @@ while(1){
 ```
 
 ### **5.3. Listener das teclas**
+
+
+
+## **6. Tecnologias**
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [C](https://devdocs.io/c/)
+- [GCC](https://gcc.gnu.org/)
+- [kernel-headers-linux](https://linuxhint.com/install-kernel-headers-linux/)
+- [Java 8](https://jdk.java.net/)
+- [JavaFX](https://www.oracle.com/java/technologies/install-javafx-sdk.html)
+- [GNU make](https://www.gnu.org/software/make/manual/make.html)
