@@ -159,11 +159,11 @@ while(1){
 }
 ```
 
-### **5.3. Listener das teclas**
+### **5.3. Listener das teclas.**
 
 O Listener das teclas é divido em 4 partes, sendo elas o ```mapa_de_teclas```, o ```bloco_observador_teclado```, o ```manipulador_evento_teclado``` e a ```converte_codigo_tecla_para_string```.
 
-#### **5.3.1. Mapa de Teclas**
+#### **5.3.1. Mapa de Teclas.**
 
 OAqui é definido um mapeamento de teclas chamado mapa_de_teclas, que associa códigos de teclas a caracteres correspondentes. Cada entrada no array bidimensional mapa_de_teclas possui duas strings: a primeira representa a tecla sem o Shift pressionado, e a segunda representa a tecla com o Shift pressionado. 
 
@@ -183,7 +183,7 @@ static const char *mapa_de_teclas[][2] = {
     .
 };
 ```
-### **5.3.2 Bloco Observador Teclado**
+### **5.3.2 Bloco Observador Teclado.**
 
 Aqui é definida uma estrutura notifier_block chamada bloco_observador_teclado, que possui um membro notifier_call apontando para a função manipulador_evento_teclado. Essa estrutura é usada para registrar o módulo como um observador dos eventos de teclado.
 
@@ -193,7 +193,7 @@ static struct notifier_block bloco_observador_teclado = {
 };
 ```
 
-### **5.3.3 Manipulador de Eventos do Teclado**
+### **5.3.3 Manipulador de Eventos do Teclado.**
 
 Essa função, manipulador_evento_teclado, é a função de retorno de chamada que é chamada sempre que ocorre um evento de teclado. Ela recebe informações sobre o evento, como o código da tecla e a ação (pressionar ou soltar a tecla), e registra as teclas pressionadas utilizando a função converte_codigo_tecla_para_string.
 
@@ -232,7 +232,7 @@ int manipulador_evento_teclado(struct notifier_block *bloco_notificacao, unsigne
 }
 ```
 
-### **5.3.4 Converte o Codigo da Tecla para String **
+### **5.3.4 Converte o Codigo da Tecla para String.**
 
 Esta função, converte_codigo_tecla_para_string, converte um código de tecla e uma máscara de Shift em uma sequência de caracteres correspondente. A sequência é armazenada no buffer fornecido como parâmetro.
 
@@ -251,7 +251,7 @@ void converte_codigo_tecla_para_string(int codigo_tecla, int mascara_shift, char
 }
 ```
 
-## **6. Tecnologias**
+## **6. Tecnologias.**
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
