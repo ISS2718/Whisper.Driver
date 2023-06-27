@@ -35,20 +35,24 @@ Dessa forma, o usuário externo é um servidor, implementado em **user space** n
 * Arquivos headers de kernel;
 
 ## **3. Instalação dos requisitos.**
-### **3.1. Java JDK 8 e Apache Ant**
+### **3.1. Java 8 JDK.**
+
+Para instalação do JDK8 é preciso ter o pacote de desenvolvedor Java 8. 
+
+No site oficial da [Oracle](https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html) você pode baixar o binário do **Java SE Development Kit 8u202** e executar no terminal
+
+```
+$ sudo tar -C /usr/java -zxf <nome do arquivo binário>.tar.gz
+```
+### **3.2. Apache ant.**
+
 A execução do servidor depende do compilador Apache Ant. Caso você não possua instalado, basta copiar o código abaixo no terminal e executar.
 
 ```
 $ sudo apt install ant
 ```
 
-Também é preciso ter o pacote de desenvolvedor Java 8. No site oficial da Oracle "https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html" você pode baixar o binário do **Java SE Development Kit 8u202** e executar no terminal
-
-```
-$ sudo tar -C /usr/java -zxf <nome do arquivo binário>.tar.gz
-```
-
-### **3.2. Arquivos headers de kernel.**
+### **3.3. Arquivos headers de kernel.**
 
 Para saber se essas bibliotecas estão instaladas no seu sistema, execute
 
