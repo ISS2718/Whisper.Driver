@@ -27,7 +27,7 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
 ## **1. Composição do projeto.**
 O projeto foi desenvolvido com o propósito de ser um driver de kernel capaz de escanear as teclas do teclado e enviar a um usuário externo conectado, funcionando por trás do uso principal do sistema.
 
-Dessa forma, o usuário externo é um servidor, implementado em **user space** na linguagem Java, com interface JavaFX. O driver é um módulo kernel que deve ser inserido manualmente, implementado em C no **kernel space**.
+Dessa forma, o usuário externo é um servidor, implementado em **user space** na linguagem Java, com interface JavaFX. O driver é um módulo kernel, com um listener de teclas e um socket de cliente, implementado em C no **kernel space**.
 
 ## **2. Requisitos**
 * Apache ant;
@@ -88,10 +88,10 @@ $ make insert
 $ make remove
 ```
 
-## **5. Resumo do módulo.**
+## **5. Resumo do driver.**
 
-### **5.1. Conexão com o servidor.**
-A rotina de conexão com o servidor é a primeira rotina executada ao ínicio do módulo. Nela, define-se o IP e configura a conexão. Depois conecta-se o socket do cliente. No trecho abaixo, há apenas a parte principal da rotina.
+### **5.1. Conexão do cliente com o servidor.**
+A rotina de conexão com o servidor é a primeira rotina executada ao ínicio do módulo. Nela, define-se o IP e configura a conexão. Depois conecta-se o socket do cliente ao servidor. No trecho abaixo, há apenas a parte principal da rotina.
 
 ```
 //Define o endereço de IP.
@@ -115,10 +115,12 @@ register_keyboard_notifier(&keysniffer_blk);
 
 
 ### **5.2. Rotinas de envio de mensagem.**
+O envio de mensagem acontece byte-a-byte. Recebendo uma mensagem como parâmetro, a rotina de envio cria estruturas de mensagem, **struct msghdr**, e de buffer, **struct kvec**. Assim, envia-se um byte da mensagem até que o retorno da função **kernel_send** seja 0.
 
 ```
-//Cria a struct do tipo msghdr.
+//Cria a struct do tipo msghdr (mensagem) e kvec (buffer).
 struct msghdr msg;
+struct kvec vec;
 
 //Define o struct de mensagem.
 msg.msg_name = 0;
