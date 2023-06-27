@@ -1,9 +1,24 @@
-# **Whisper Driver - escaneador em kernel com comunicação TCP.**
+![Whisper.Driver](img/Whisper.Driver.jpeg)
+
+
+<p align="center">
+<img src="https://img.shields.io/github/license/ISS2718/Whisper.Driver"/>
+<img src="https://img.shields.io/badge/Language-Java-orange"/>
+<img src="https://img.shields.io/badge/API-JavaFX-orange"/>
+<img src="https://img.shields.io/badge/Kernel_Module-C-blue"/>
+</p>
+
+## **Resumo**
 
 Trabalho da disciplina de Sistemas Operacionais I (SSC0640), lecionada pelo Docente Vanderlei Bonato, para o curso de Engenharia de Computação - USP São Carlos.
 
+Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
 
-Por: **Caio O. Godinho**, **Hugo H. Nakamura** e **Isaac S. Soares**.
+### **Autores**
+
+* **[Caio O. Godinho](https://github.com/caioogod-wr)**;
+* **[Hugo H. Nakamura](https://github.com/ikuyorih9)**;
+* **[Isaac S. Soares](https://github.com/ISS2718)**.
 
 ---
 
