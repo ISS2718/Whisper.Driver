@@ -1,18 +1,17 @@
-SRC := ./src/servidorinterface
-BUILD := ./build
-DIST := ./dist
+SRC := src/servidorinterface
+BUILD := build
+DIST := dist
 CLASSES := $(BUILD)/classes
+FX_PATH := ./libFX/javaFX-11/lib
+JBUILD := servidorinterface.
 
 all: compile
 
-compile: $(SRC)/Servidor.java $(SRC)/ServidorInterface.java $(SRC)/ServidorInterfaceDocumentController.java $(SRC)/ServidorInterfaceDocument.fxml $(SRC)/styles.css
-	ant compile
-
-jar: compile
-	ant jar
+compile: $(SRC)/ServidorInterface.java $(SRC)/ServidorInterfaceDocumentController.java $(SRC)/Servidor.java
+	javac --module-path $(FX_PATH) --add-modules javafx.controls,javafx.fxml -d $(CLASSES)  $(SRC)/ServidorInterface.java $(SRC)/ServidorInterfaceDocumentController.java $(SRC)/Servidor.java
 
 start: 
-	ant jfxsa-run
+	cd $(CLASSES) && java --module-path ../../$(FX_PATH) --add-modules javafx.controls,javafx.fxml  $(JBUILD)ServidorInterface $(JBUILD)ServidorInterfaceDocumentController $(JBUILD)Servidor
 
 clean: $(CLASSES)/servidorinterface $(DIST)/*
 	rm -r $(CLASSES)/servidorinterface && rm -I $(DIST)/*
