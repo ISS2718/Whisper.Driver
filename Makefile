@@ -4,7 +4,7 @@ SCR_SEVER := ./ServidorInterface
 all: compile
 
 compile: $(SCR_MODULE)/Makefile $(SCR_SEVER)/Makefile
-	cd $(SCR_SEVER) && make jar
+	cd $(SCR_SEVER) && make all
 	cd $(SCR_MODULE) && make all
 	
 insert: $(SCR_MODULE)/Makefile

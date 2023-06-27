@@ -14,27 +14,18 @@ public class ServidorInterface extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ServidorInterfaceDocument.fxml"));
-        Parent root = loader.load();
+        Parent root = FXMLLoader.load(getClass().getResource("ServidorInterfaceDocument.fxml"));
         
         Scene scene = new Scene(root);
-        
-        ServidorInterfaceDocumentController Controller = loader.getController();
-        Controller.fecharServidor(stage);
-        
         String css = getClass().getResource("styles.css").toExternalForm();
         scene.getStylesheets().add(css);
         
         stage.setScene(scene);
         stage.setTitle("Servidor");
         stage.setResizable(false);
-        
         stage.show();
     }
 
-
-    
     /**
      * @param args the command line arguments
      */
