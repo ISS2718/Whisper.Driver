@@ -8,17 +8,6 @@
 <img src="https://img.shields.io/badge/Kernel_Module-C-blue"/>
 </p>
 
-<p align="center">
- <a style="color: white" href="https://github.com/ISS2718/Whisper.Driver/tree/main#resumo">Resumo</a> •
- <a href="https://github.com/ISS2718/Whisper.Driver/tree/main#1-composi%C3%A7%C3%A3o-do-projeto">1. Composição do projeto.</a> • 
- <a href="#tecnologias">2. Pré-Requisitos</a> • 
- <a href="#contribuicao">3. Instalação dos Pré-requisitos (Ubuntu).</a> • 
- <a href="#licenc-a">4. Guia de execução.</a> • 
- <a href="#autor">5. Resumo do driver.</a>
- <a href="#autor">6. Tecnologias.</a>
- <a href="#autor">7. Licensa.</a>
-</p>
-
 ## **Resumo.**
 
 Trabalho da disciplina de Sistemas Operacionais I (SSC0640), lecionada pelo Docente Vanderlei Bonato, para o curso de Engenharia de Computação - USP São Carlos.
@@ -34,28 +23,26 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
 
 ## **Tabela de conteúdos.**
 
-<!--ts-->
-   * [Resumo.](https://github.com/ISS2718/Whisper.Driver/tree/README.md#resumo)
-       * [Autores.](https://github.com/ISS2718/Whisper.Driver/tree/README.md#autores)     
-   * [Tabela de conteúdos.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#tabela-de-conte%C3%BAdos)
-   * [1. Composição do projeto.](https://github.com/ISS2718/Whisper.Driver/tree/README.md#1-composi%C3%A7%C3%A3o-do-projeto)
-   * [2. Pré-Requisitos](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#2-pr%C3%A9-requisitos)
-   * [3. Instalação dos Pré-requisitos (Ubuntu).](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos-ubuntu)
-      * [3.1. Java 8 JDK.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#31-java-8-jdk)
-      * [3.2. Apache ant.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#32-apache-ant)
-      * [3.3. Arquivos headers de kernel.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#33-arquivos-headers-de-kernel)
-   * [4. Guia de execução.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#33-arquivos-headers-de-kernel)
-   * [5. Resumo do driver.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#5-resumo-do-driver)
-       * [5.1. Conexão do cliente com o servidor.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#51-conex%C3%A3o-do-cliente-com-o-servidor)
-       * [5.2. Rotinas de envio de mensagem.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#52-rotinas-de-envio-de-mensagem)
-       * [5.3. Listener das teclas.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#53-listener-das-teclas)
-           *  [5.3.1. Mapa de Teclas.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#531-mapa-de-teclas)
-           *  [5.3.2 Bloco Observador Teclado.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#532-bloco-observador-teclado)
-           *  [5.3.3 Manipulador de Eventos do Teclado.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#533-manipulador-de-eventos-do-teclado)
-           *  [5.3.4 Converte o Codigo da Tecla para String.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#534-converte-o-codigo-da-tecla-para-string)
-   * [6. Tecnologias.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#6-tecnologias)
-   * [7. Licensa.](https://github.com/ISS2718/Whisper.Driver/edit/main/README.md#7-licensa)
-<!--te-->
+   * [**Resumo.**](#resumo)
+       * [**Autores.**](#autores)     
+   * [**Tabela de conteúdos.**](#tabela-de-conte%C3%BAdos)
+   * [**1. Composição do projeto.**](#1-composi%C3%A7%C3%A3o-do-projeto)
+   * [**2. Pré-Requisitos**](#2-pr%C3%A9-requisitos)
+   * [**3. Instalação dos Pré-requisitos (Ubuntu).**](#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos-ubuntu)
+      * [**3.1. Java 8 JDK.**](#31-java-8-jdk)
+      * [**3.2. Apache ant.**](#32-apache-ant)
+      * [**3.3. Arquivos headers de kernel.**](#33-arquivos-headers-de-kernel)
+   * [**4. Guia de execução.**](#33-arquivos-headers-de-kernel)
+   * [**5. Resumo do driver.**](#5-resumo-do-driver)
+       * [**5.1. Conexão do cliente com o servidor.**](#51-conex%C3%A3o-do-cliente-com-o-servidor)
+       * [**5.2. Rotinas de envio de mensagem.**](#52-rotinas-de-envio-de-mensagem)
+       * [**5.3. Listener das teclas.**](#53-listener-das-teclas)
+           *  [**5.3.1. Mapa de Teclas.**](#531-mapa-de-teclas)
+           *  [**5.3.2 Bloco Observador Teclado.**](#532-bloco-observador-teclado)
+           *  [**5.3.3 Manipulador de Eventos do Teclado.**](#533-manipulador-de-eventos-do-teclado)
+           *  [**5.3.4 Converte o Codigo da Tecla para String.**](#534-converte-o-codigo-da-tecla-para-string)
+   * [**6. Tecnologias.**](#6-tecnologias)
+   * [**7. Licensa.**](#7-licensa)
 
 ---
 
