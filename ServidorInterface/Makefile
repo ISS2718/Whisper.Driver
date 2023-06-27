@@ -3,7 +3,7 @@ BUILD := ./build
 DIST := ./dist
 CLASSES := $(BUILD)/classes
 
-all: compile
+all: jar
 
 compile: $(SRC)/Servidor.java $(SRC)/ServidorInterface.java $(SRC)/ServidorInterfaceDocumentController.java $(SRC)/ServidorInterfaceDocument.fxml $(SRC)/styles.css
 	ant compile

