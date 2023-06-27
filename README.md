@@ -1,4 +1,4 @@
-# **Módulo kernel escaneador de teclado com servidor TCP.**
+# **Whisper Driver - escaneador em kernel com comunicação TCP.**
 
 Trabalho da disciplina de Sistemas Operacionais I (SSC0640), lecionada pelo Docente Vanderlei Bonato, para o curso de Engenharia de Computação - USP São Carlos.
 
