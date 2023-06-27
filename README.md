@@ -25,16 +25,19 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
 **Esse código foi realizado e executado na distribuição de Linux Ubuntu 23.04. Em outros sistemas derivados, algumas execuções podem não funcionar!**
 
 ## **1. Composição do projeto.**
+
 O projeto foi desenvolvido com o propósito de ser um driver de kernel capaz de escanear as teclas do teclado e enviar a um usuário externo conectado, funcionando por trás do uso principal do sistema.
 
 Dessa forma, o usuário externo é um servidor, implementado em **user space** na linguagem Java, com interface JavaFX. O driver é um módulo kernel, com um listener de teclas e um socket de cliente, implementado em C no **kernel space**.
 
 ## **2. Requisitos**
-* Apache ant;
+
 * JDK Java 8 com javaFX;
+* Apache ant;
 * Arquivos headers de kernel;
 
 ## **3. Instalação dos requisitos.**
+
 ### **3.1. Java 8 JDK.**
 
 Para instalação do JDK8 é preciso ter o pacote de desenvolvedor Java 8. 
@@ -95,6 +98,7 @@ $ make remove
 ## **5. Resumo do driver.**
 
 ### **5.1. Conexão do cliente com o servidor.**
+
 A rotina de conexão com o servidor é a primeira rotina executada ao ínicio do módulo. Nela, define-se o IP e configura a conexão. Depois conecta-se o socket do cliente ao servidor. No trecho abaixo, há apenas a parte principal da rotina.
 
 ```
@@ -119,6 +123,7 @@ register_keyboard_notifier(&keysniffer_blk);
 
 
 ### **5.2. Rotinas de envio de mensagem.**
+
 O envio de mensagem acontece byte-a-byte. Recebendo uma mensagem como parâmetro, a rotina de envio cria estruturas de mensagem, **struct msghdr**, e de buffer, **struct kvec**. Assim, envia-se um byte da mensagem até que o retorno da função **kernel_send** seja 0.
 
 ```
