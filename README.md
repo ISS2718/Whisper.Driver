@@ -28,10 +28,14 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
    * [**Tabela de conteúdos.**](#tabela-de-conte%C3%BAdos)
    * [**1. Composição do projeto.**](#1-composi%C3%A7%C3%A3o-do-projeto)
    * [**2. Pré-Requisitos**](#2-pr%C3%A9-requisitos)
-   * [**3. Instalação dos Pré-requisitos (Ubuntu).**](#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos-ubuntu)
-      * [**3.1. Java 8 JDK.**](#31-java-8-jdk)
-      * [**3.2. Apache ant.**](#32-apache-ant)
-   * [**4. Guia de execução.**](#33-arquivos-headers-de-kernel)
+   * [**3. Instalação dos Pré-requisitos.**](#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos)
+      * [**3.1.Ubuntu**](#31-ubuntu) 
+        * [**3.1.1. Java 8 JDK.**](#311-java-jdk)
+        * [**3.1.2. Apache ant.**](#312-arquivos-headers-de-kernel)
+      * [**3.2.Manjaro**](#31-manjaro) 
+        * [**3.2.1. Java 8 JDK.**](#321-java-jdk)
+        * [**3.2.2. Apache ant.**](#322-arquivos-headers-de-kernel)
+   * [**4. Guia de execução.**](#4-guia-de-execu%C3%A7%C3%A3o)
    * [**5. Resumo do driver.**](#5-resumo-do-driver)
        * [**5.1. Conexão do cliente com o servidor.**](#51-conex%C3%A3o-do-cliente-com-o-servidor)
        * [**5.2. Rotinas de envio de mensagem.**](#52-rotinas-de-envio-de-mensagem)
@@ -60,7 +64,7 @@ Dessa forma, o usuário externo é um servidor, implementado em **user space** n
 
 ### **3.1. Ubuntu.**
 
-#### **3.1.2. Java JDK.**
+#### **3.1.1. Java JDK.**
 
 Para executar o servidor em Java, é preciso instalá-lo. Primeiro, verifique se não há uma JDK 11 ou superior. Execute
 ```
@@ -70,12 +74,12 @@ $ java -version
 Caso não haja, execute
 
 ```
-sudo apt install default-jdk
+$ sudo apt install default-jdk
 ```
 
 Se o JDK foi instalado com êxito, então ao executar *$ java -version*, deve aparecer a última versão do JDK.
 
-#### **3.2. Arquivos headers de kernel.**
+#### **3.1.2. Arquivos headers de kernel.**
 
 Para saber se essas bibliotecas estão instaladas no seu sistema, execute
 
@@ -88,6 +92,40 @@ Caso você não tenha as bibliotecas, execute
 
 ```
 $ sudo apt-get install build-essential linux-headers-`uname -r`
+```
+
+### **3.2. Manjaro.**
+
+#### **3.2.1. Java JDK.**
+
+Para executar o servidor em Java, é preciso instalá-lo. Primeiro, verifique se não há uma JDK 11 ou superior. Execute:
+
+```
+$ java -version
+```
+
+Caso não haja, execute:
+
+```
+$ sudo pacman -S jre-openjdk-headless jre-openjdk jdk-openjdk openjdk-doc openjdk-src
+```
+
+Se o JDK foi instalado com êxito, então ao executar *$ java -version*, deve aparecer a última versão do JDK.
+
+#### **3.2.2. Arquivos headers de kernel.**
+
+Para instalar é preiso estar com o sistema atualizado, para isso use:
+
+```
+$sudo pacman -Syu
+```
+
+**Se precisar reebote o sistema.**
+
+Agora para instalar execute:
+
+```
+$ sudo pacman -S base-devel linux-headers
 ```
 
 ## **4. Guia de execução.**
@@ -277,7 +315,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [C](https://devdocs.io/c/)
 - [GCC](https://gcc.gnu.org/)
 - [kernel-headers-linux](https://linuxhint.com/install-kernel-headers-linux/)
-- [Java 8](https://jdk.java.net/)
+- [Java](https://jdk.java.net/)
 - [JavaFX](https://www.oracle.com/java/technologies/install-javafx-sdk.html)
 - [GNU make](https://www.gnu.org/software/make/manual/make.html)
 
