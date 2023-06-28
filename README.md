@@ -53,7 +53,7 @@ Dessa forma, o usuário externo é um servidor, implementado em **user space** n
 
 ## **2. Pré-Requisitos.**
 
-* JDK Java (qualquer versão o 8 ou superior);
+* Java JDK 11 (ou superior);
 * Arquivos headers de kernel;
 
 ## **3. Instalação dos Pré-requisitos.**
@@ -62,13 +62,18 @@ Dessa forma, o usuário externo é um servidor, implementado em **user space** n
 
 #### **3.1.2. Java JDK.**
 
-Para instalação do JDK8 é preciso ter o pacote de desenvolvedor Java 8. 
+Para executar o servidor em Java, é preciso instalá-lo. Primeiro, verifique se não há uma JDK 11 ou superior. Execute
+```
+$ java -version
+```
 
-No site oficial da [Oracle](https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html) você pode baixar o binário do **Java SE Development Kit 8u202** e executar no terminal
+Caso não haja, execute
 
 ```
-$ sudo tar -C /usr/java -zxf <nome do arquivo binário>.tar.gz
+sudo apt install default-jdk
 ```
+
+Se o JDK foi instalado com êxito, então ao executar *$ java -version*, deve aparecer a última versão do JDK.
 
 #### **3.2. Arquivos headers de kernel.**
 
