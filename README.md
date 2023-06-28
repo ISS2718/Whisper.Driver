@@ -31,13 +31,13 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
    * [**3. Instalação dos Pré-requisitos.**](#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos)
       * [**3.1.Ubuntu**](#31-ubuntu) 
         * [**3.1.1. Java JDK.**](#311-java-jdk)
-        * [**3.1.2. Apache ant.**](#312-arquivos-headers-de-kernel)
+        * [**3.1.2. Arquivos headers de kernel.**](#312-arquivos-headers-de-kernel)
       * [**3.2.Manjaro**](#32-manjaro)
         * [**3.2.1. Java JDK.**](#321-java-jdk)
-        * [**3.2.2. Apache ant.**](#322-arquivos-headers-de-kernel)
+        * [**3.2.2. Arquivos headers de kernel.**](#322-arquivos-headers-de-kernel)
       * [**3.3. Fedora.**](#32-manjaro)
         * [**3.3.1. Java JDK.**](#321-java-jdk)
-        * [**3.3.2. Apache ant.**](#322-arquivos-headers-de-kernel)
+        * [**3.3.2. Arquivos headers de kernel.**](#322-arquivos-headers-de-kernel)
    * [**4. Guia de execução.**](#4-guia-de-execu%C3%A7%C3%A3o)
    * [**5. Resumo do driver.**](#5-resumo-do-driver)
        * [**5.1. Conexão do cliente com o servidor.**](#51-conex%C3%A3o-do-cliente-com-o-servidor)
@@ -48,7 +48,7 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
            *  [**5.3.3 Manipulador de Eventos do Teclado.**](#533-manipulador-de-eventos-do-teclado)
            *  [**5.3.4 Converte o Codigo da Tecla para String.**](#534-converte-o-codigo-da-tecla-para-string)
    * [**6. Tecnologias.**](#6-tecnologias)
-   * [**7. Licensa.**](#7-licensa)
+   * [**7. Licença.**](#7-licença)
 
 ---
 
@@ -362,6 +362,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [JavaFX](https://www.oracle.com/java/technologies/install-javafx-sdk.html)
 - [GNU make](https://www.gnu.org/software/make/manual/make.html)
 
-## **7. Licensa.**
+## **7. Licença.**
 
 [MIT License](https://github.com/ISS2718/Whisper.Driver/blob/main/Makefile) © [Caio O. Godinho](https://github.com/caioogod-wr), [Hugo H. Nakamura](https://github.com/ikuyorih9), [Isaac Soares](https://github.com/ISS2718)
+
+![WhisperGif](img/WhisperGif.gif)

