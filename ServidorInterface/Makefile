@@ -2,7 +2,7 @@ SRC := src/servidorinterface
 BUILD := build
 DIST := dist
 CLASSES := $(BUILD)/classes
-FX_PATH := ./libFX/javaFX-11/lib
+FX_PATH := libFX/javaFX-20/lib
 JBUILD := servidorinterface.
 
 all: compile

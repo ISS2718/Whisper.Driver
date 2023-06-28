@@ -1,15 +1,13 @@
 package servidorinterface;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-/**
- *
- * @author ikuyorih9
- */
 public class ServidorInterface extends Application {
     
     @Override
@@ -23,6 +21,11 @@ public class ServidorInterface extends Application {
         stage.setScene(scene);
         stage.setTitle("Servidor");
         stage.setResizable(false);
+
+        stage.setOnCloseRequest((WindowEvent e) -> {
+            System.exit(0);
+        });
+
         stage.show();
     }
 

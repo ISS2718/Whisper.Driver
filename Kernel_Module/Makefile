@@ -1,4 +1,4 @@
-file_src_name := backdoorDriver
+file_src_name := WhisperDriver
 obj-m := $(file_src_name).o
 
 all: $(file_src_name).c
