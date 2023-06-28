@@ -32,7 +32,7 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
       * [**3.1.Ubuntu**](#31-ubuntu) 
         * [**3.1.1. Java 8 JDK.**](#311-java-jdk)
         * [**3.1.2. Apache ant.**](#312-arquivos-headers-de-kernel)
-      * [**3.2.Manjaro**](#31-manjaro) 
+      * [**3.2.Manjaro**](#32-manjaro)
         * [**3.2.1. Java 8 JDK.**](#321-java-jdk)
         * [**3.2.2. Apache ant.**](#322-arquivos-headers-de-kernel)
    * [**4. Guia de execução.**](#4-guia-de-execu%C3%A7%C3%A3o)
