@@ -141,7 +141,7 @@ $ java -version
 Caso não haja, execute:
 
 ```
-$ sudo dnf install java-latest-openjdk-devel.x86_64
+$ sudo dnf install java-latest-openjdk-devel
 ```
 
 Se o JDK foi instalado com êxito, então ao executar *$ java -version* deve aparecer a última versão do JDK. **Caso isso não ocorra**, será preciso configurar a versão do java utilizada pelo sistema:  
