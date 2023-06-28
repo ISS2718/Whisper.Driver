@@ -30,11 +30,14 @@ Whisper.Driver é um escaneador de teclado em kernel com comunicação TCP.
    * [**2. Pré-Requisitos**](#2-pr%C3%A9-requisitos)
    * [**3. Instalação dos Pré-requisitos.**](#3-instala%C3%A7%C3%A3o-dos-pr%C3%A9-requisitos)
       * [**3.1.Ubuntu**](#31-ubuntu) 
-        * [**3.1.1. Java 8 JDK.**](#311-java-jdk)
+        * [**3.1.1. Java JDK.**](#311-java-jdk)
         * [**3.1.2. Apache ant.**](#312-arquivos-headers-de-kernel)
       * [**3.2.Manjaro**](#32-manjaro)
-        * [**3.2.1. Java 8 JDK.**](#321-java-jdk)
+        * [**3.2.1. Java JDK.**](#321-java-jdk)
         * [**3.2.2. Apache ant.**](#322-arquivos-headers-de-kernel)
+      * [**3.3. Fedora.**](#32-manjaro)
+        * [**3.3.1. Java JDK.**](#321-java-jdk)
+        * [**3.3.2. Apache ant.**](#322-arquivos-headers-de-kernel)
    * [**4. Guia de execução.**](#4-guia-de-execu%C3%A7%C3%A3o)
    * [**5. Resumo do driver.**](#5-resumo-do-driver)
        * [**5.1. Conexão do cliente com o servidor.**](#51-conex%C3%A3o-do-cliente-com-o-servidor)
@@ -261,7 +264,7 @@ O Listener das teclas é divido em 4 partes, sendo elas o ```mapa_de_teclas```, 
 
 #### **5.3.1. Mapa de Teclas.**
 
-OAqui é definido um mapeamento de teclas chamado mapa_de_teclas, que associa códigos de teclas a caracteres correspondentes. Cada entrada no array bidimensional mapa_de_teclas possui duas strings: a primeira representa a tecla sem o Shift pressionado, e a segunda representa a tecla com o Shift pressionado. 
+Aqui é definido um mapeamento de teclas chamado mapa_de_teclas, que associa códigos de teclas a caracteres correspondentes. Cada entrada no array bidimensional mapa_de_teclas possui duas strings: a primeira representa a tecla sem o Shift pressionado, e a segunda representa a tecla com o Shift pressionado. 
 
 ```
 static const char *mapa_de_teclas[][2] = {
@@ -279,6 +282,7 @@ static const char *mapa_de_teclas[][2] = {
     .
 };
 ```
+
 ### **5.3.2 Bloco Observador Teclado.**
 
 Aqui é definida uma estrutura notifier_block chamada bloco_observador_teclado, que possui um membro notifier_call apontando para a função manipulador_evento_teclado. Essa estrutura é usada para registrar o módulo como um observador dos eventos de teclado.
