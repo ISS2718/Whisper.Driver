@@ -128,6 +128,45 @@ Agora para instalar execute:
 $ sudo pacman -S base-devel linux-headers
 ```
 
+### **3.3. Fedora.**
+
+#### **3.3.1. Java JDK.**
+
+Para executar o servidor em Java, é preciso instalá-lo. Primeiro, verifique se não há uma JDK 11 ou superior. Execute:
+
+```
+$ java -version
+```
+
+Caso não haja, execute:
+
+```
+$ sudo dnf install java-latest-openjdk-devel.x86_64
+```
+
+Se o JDK foi instalado com êxito, então ao executar *$ java -version* deve aparecer a última versão do JDK. **Caso isso não ocorra**, será preciso configurar a versão do java utilizada pelo sistema:  
+
+```
+$ sudo alternatives --config java
+```
+
+#### **3.3.2. Arquivos headers de kernel.**
+
+Para instalar é preiso estar com o sistema atualizado, para isso use:
+
+```
+$ sudo dnf update
+```
+
+**Se precisar reebote o sistema.**
+
+Agora para instalar execute:
+
+```
+$ sudo dnf linux-headers
+```
+
+
 ## **4. Guia de execução.**
 
 1. Compile todos os arquivos executando:
