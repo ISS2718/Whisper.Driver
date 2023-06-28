@@ -148,22 +148,32 @@ u32 criaEndereco(u8 *ip){
 }
 
 int enviarMensagem(struct socket *localSocket, const char * mensagem, const size_t tam, unsigned long flags){
+    //Cria estruturas de mensagem (msghdr) e de buffer (kvec).
     struct msghdr msg;
     struct kvec vec;
     int len, written = 0, left = tam;
 
+    //Inicializa a struct msghdr msg.
     msg.msg_name = 0;
     msg.msg_namelen = 0;
     msg.msg_control = NULL;
     msg.msg_controllen = 0;
     msg.msg_flags = flags;
     
+    //While para enviar byte-a-byte.
     while(1){
+        //Incrementa o buffer em 'written' bytes;
         vec.iov_len = left;
         vec.iov_base = (char *)mensagem + written;
+
+        //Envia a mensagem pelo socket e retorna o número de bytes enviados.
         len = kernel_sendmsg(localSocket, &msg, &vec, left, left);
+
+        //Caso haja alguma flag intermediária, continue.
         if(len == -ERESTARTSYS || !(flags & MSG_DONTWAIT) && len == -EAGAIN)
             continue;
+
+        //Enquanto os bytes continuarem a ser enviados, atualiza as variáveis.
         if(len > 0){
             written += len;
             left -= len;
@@ -172,44 +182,36 @@ int enviarMensagem(struct socket *localSocket, const char * mensagem, const size
 
         }
 
+        //Se chegou aqui, é porque todos os bytes foram enviados.
         break;
     }
     return written ? written:len;
 }
 
 int conectarServidor(void){
+    //Cria uma estrutura de endereço e o endereço de IP.
     struct sockaddr_in endereco;
     unsigned char ip[5] = {127,0,0,1,'\0'};
-
 
     int len = 63;
     char reply[64];
     int erro = -1;
 
-    DECLARE_WAIT_QUEUE_HEAD(filaEspera);
-
+    //Cria o socket.
     erro = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP, &socket);
-    if(erro < 0){
-        printk(KERN_ERR "Erro ao criar o socket.\n");
+    if(erro < 0)
         return -1;
-    }
     memset(&endereco, 0, sizeof(endereco));
 
+    //Configura uma conexão TCP, na porta 'PORTA', no IP 'ip'.
     endereco.sin_family = AF_INET;
     endereco.sin_port = htons(PORTA);
     endereco.sin_addr.s_addr = htonl(criaEndereco(ip));
 
+    //Conecta socket.
     erro = socket->ops->connect(socket, (struct sockaddr*)&endereco, sizeof(endereco), O_RDWR);
-    if(erro && erro != -EINPROGRESS){
-        printk(KERN_ERR "Erro ao conectar socket.\n");
+    if(erro && erro != -EINPROGRESS)
         return -1;
-    }
-    
-    printk(KERN_INFO "Conectado ao servidor.\n");
-
-    memset(&reply, 0, len+1);
-    strcat(reply, "HOLA\n");
-    enviarMensagem(socket, reply, strlen(reply), MSG_DONTWAIT);
 
     return 0;
 }
