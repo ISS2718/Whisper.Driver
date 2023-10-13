@@ -364,6 +364,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ## **7. Licença.**
 
-[MIT License](https://github.com/ISS2718/Whisper.Driver/blob/main/Makefile) © [Caio O. Godinho](https://github.com/caioogod-wr), [Hugo H. Nakamura](https://github.com/ikuyorih9), [Isaac Soares](https://github.com/ISS2718)
+[MIT License](https://github.com/ISS2718/Whisper.Driver/blob/main/LICENSE) © [Caio O. Godinho](https://github.com/caioogod-wr), [Hugo H. Nakamura](https://github.com/ikuyorih9), [Isaac Soares](https://github.com/ISS2718)
 
 ![WhisperGif](img/WhisperGif.gif)
